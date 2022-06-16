@@ -24,6 +24,7 @@
 
     body {
       background-color: var(--body-bg-color);
+      font-family:arial,sans-serif;
     }
 
     #main_content {
@@ -71,7 +72,7 @@
     color: #fff;
     cursor: pointer;
     display: inline-flex;
-    font-size: 16px;
+    font-size: 30px;
     font-weight: 600;
     justify-content: center;
     line-height: 1.25;
@@ -96,7 +97,25 @@
   }
 
   .button:hover {
-    transform: translateY(-1px);
+    transform: translateY(-4px);
+  }
+
+  .button-select{
+    animation-name: activebutton;
+    animation-duration: .3s;
+  }
+
+  @keyframes activebutton{
+    50%{
+      background-color: var(--button-bg-focus-color);
+      box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+      transform: translateY(-4px);
+    }
+    100%{
+      background-color: var(--button-bg-active-color);
+      box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+      transform: translateY(0);
+    }
   }
 
   .button:active {
@@ -126,7 +145,6 @@
     max-width: 100%;
     white-space:nowrap;
     -webkit-user-select:text;
-    font-family:arial,sans-serif;
     float:right;
   }
   .top-info{
@@ -182,33 +200,33 @@
 
     <div class="display">
       <div class="button-line top-line">
-        <button class="button" onclick="add_number(this.innerText)" role="button">7</button>
-        <button class="button" onclick="add_number(this.innerText)" role="button">8</button>
-        <button class="button" onclick="add_number(this.innerText)" role="button">9</button>
-        <button class="button button-right">CE
+        <button class="button" id="7" onclick="add_number(this.innerText)" role="button">7</button>
+        <button class="button" id="8" onclick="add_number(this.innerText)" role="button">8</button>
+        <button class="button" id="9" onclick="add_number(this.innerText)" role="button">9</button>
+        <button class="button button-right" id="backspace" onclick="remove_last_characters()">CE
       </button>
         <button class="button" role="button">C</button>
       </div>
 
       <div class="button-line">
-        <button class="button" onclick="add_number(this.innerText)" role="button">4</button>
-        <button class="button" onclick="add_number(this.innerText)" role="button">5</button>
-        <button class="button" onclick="add_number(this.innerText)" role="button">6</button>
+        <button class="button" id="4" onclick="add_number(this.innerText)" role="button">4</button>
+        <button class="button" id="5" onclick="add_number(this.innerText)" role="button">5</button>
+        <button class="button" id="6" onclick="add_number(this.innerText)" role="button">6</button>
         <button class="button button-right" role="button">/</button>
         <button class="button" role="button">*</button>
       </div>
 
       <div class="button-line">
-        <button class="button" onclick="add_number(this.innerText)" role="button">1</button>
-        <button class="button" onclick="add_number(this.innerText)" role="button">2</button>
-        <button class="button" onclick="add_number(this.innerText)" role="button">3</button>
+        <button class="button" id="1" onclick="add_number(this.innerText)" role="button">1</button>
+        <button class="button" id="2" onclick="add_number(this.innerText)" role="button">2</button>
+        <button class="button" id="3" onclick="add_number(this.innerText)" role="button">3</button>
         <button class="button button-right" role="button">-</button>
         <button class="button" role="button">+</button>
       </div>
 
       <div class="button-line">
-        <button class="button button-dup" onclick="add_number(this.innerText)" role="button">0</button>
-        <button class="button" onclick="add_number(this.innerText)" role="button">,</button>
+        <button class="button button-dup" id="0" onclick="add_number(this.innerText)" role="button">0</button>
+        <button class="button" id="," onclick="add_number(this.innerText)" role="button">,</button>
         <button class="button button-dup button-right" role="button">=</button>
       </div>
 
@@ -216,45 +234,68 @@
   </div>
 
   <script>
+
+    
     
     var eventTarget = document.getElementById('BodyCalculator')
     
-    eventTarget.addEventListener("keyup", event => {
+    eventTarget.addEventListener("keydown", event => {
       console.log(event.keyCode)
       if (event.keyCode === 48 ){
-        add_number('0')
+        animation_button('0')
       }
       if (event.keyCode === 49 ){
-        add_number('1')
+        animation_button('1')
       }
       if (event.keyCode === 50 ){
-        add_number('2')
+       animation_button('2')
       }
       if (event.keyCode === 51 ){
-        add_number('3')
+        animation_button('3')
       }
       if (event.keyCode === 52 ){
-        add_number('4')
+        animation_button('4')
       }
       if (event.keyCode === 53 ){
-        add_number('5')
+        animation_button('5')
       }
       if (event.keyCode === 54 ){
-        add_number('6')
+        animation_button('6')
       }
       if (event.keyCode === 55 ){
-        add_number('7')
+        animation_button('7')
       }
       if (event.keyCode === 56 ){
-        add_number('8')
+        animation_button('8')
       }
       if (event.keyCode === 57 ){
-        add_number('9')
+        animation_button('9')
       }
       if (event.keyCode === 188 ){
-        add_number(',')
+        animation_button(',')
+      }
+      if (event.keyCode === 8 ){
+        animation_button('backspace')
       }
     });
+
+    function animation_button(id){
+      var element = document.getElementById(id);
+        element.click()
+        element.classList.add("button-select");
+        setTimeout(function(){ 
+          element.classList.remove("button-select");
+      }, 300);
+    }
+
+    function remove_last_characters(){
+
+      var bottom = document.getElementById('bottominfo')
+      var text = bottom.innerText
+      var text_last_characters_removed = text.slice(0, -1);
+      
+      bottom.innerText = text_last_characters_removed
+    }
 
     function add_number(value){
       var bottom = document.getElementById('bottominfo')
