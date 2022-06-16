@@ -10,4 +10,4 @@ api.add_resource(Calculator_sum, '/sum')
 app.add_url_rule('/', view_func=Calc.home, methods=['POST','GET'])
 
 if __name__ == '__main__':
-    app.run(app, host='localhost', port=8080 , debug=True)
+    app.run(host='localhost', port=8080 , debug=True)
