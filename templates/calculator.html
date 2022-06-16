@@ -2,16 +2,278 @@
 <html lang="pt-br">
 
 <head>
-
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>Calculator Flask</title>
+  <link rel="icon" href="static/ico/icon.png">
 </head>
 
-<body>
+<body id="BodyCalculator">
+  <style>
+    :root {
+      --body-bg-color: #a9e4df;
+      --main_content-bg-color: #009488;
+      --display-bg-color: #01B6A2;
+      --button-bg-color: #ff8264;
+      --button-bg-focus-color: #ff9379;
+      --button-bg-active-color: #F74704;
+      --scrollbar-bg-color: #A9E4DE;
+      --bar-bg-color: #03a497;
+      --bar-hover-bg-color: #00746B;
+    }
+
+
+    body {
+      background-color: var(--body-bg-color);
+    }
+
+    #main_content {
+      width: 800px;
+      min-height: 500px;
+      height: auto;
+      margin: auto;
+      padding: 10px;
+      background-color: var(--main_content-bg-color);
+      position: relative;
+      border-radius: 10px;
+    }
+
+    .container {
+      padding: 10px;
+    }
+    .bg-display {
+      background-color: var(--display-bg-color);
+    }
+
+    .display{
+      width: 96%;
+      border-radius: 5px !important;
+      height: auto;
+      margin: auto;
+      position: relative;
+    }
+    .top-display {
+      min-height: 25px;
+      text-align: right;
+    }
+    .bottom-display{
+      min-height: 80px;
+      text-align: right;
+    }
+      
+  .button {
+    align-items: center;
+    background-clip: padding-box;
+    background-color: var(--button-bg-color);
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 16px;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.25;
+    margin: 0;
+    min-height: 5rem;
+    min-width: 9rem;
+    padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+    position: relative;
+    text-decoration: none;
+    transition: all 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    width: auto;
+  }
+
+  .button:hover,
+  .button:focus {
+    background-color: var(--button-bg-focus-color);
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+  }
+
+  .button:hover {
+    transform: translateY(-1px);
+  }
+
+  .button:active {
+    background-color: var(--button-bg-active-color);
+    box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+    transform: translateY(0);
+  }
+  .button-line{
+    margin-top: 8px
+  }
+  .top-line{
+    margin-top: 20px
+  }
+  .button-right{
+    margin-left: 30px;
+  }
+  .button-dup{
+    min-width: 18.25rem;
+  }
+  .bottom-info{
+    vertical-align: middle;
+    line-height: 80px;
+    font-size: 60px;
+    color: aliceblue;
+    text-align: left;
+    overflow: auto;
+    max-width: 100%;
+    white-space:nowrap;
+    -webkit-user-select:text;
+    font-family:arial,sans-serif;
+    float:right;
+  }
+  .top-info{
+    vertical-align: middle;
+    line-height: 25px;
+    font-size: 20px;
+    color: aliceblue;
+    text-align: left;
+    overflow: auto;
+    max-width: 100%;
+    white-space:nowrap;
+    -webkit-user-select:text;
+    font-family:arial,sans-serif;
+    float:right;    
+  }
+  /* width */
+::-webkit-scrollbar {
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-bg-color);
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--bar-bg-color);
+  border: 1px solid var(--scrollbar-bg-color);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bar-hover-bg-color);
+}
+
+  </style>
   <div id="main_content">
-    <div id="container">
-      <div id="display-calculator">
+
+    <div class="display bg-display container">
+      <div class="top-display">
+        <span class="top-info" id="topinfo">
+          0
+        </span>
+      </div>
+      <div class="bottom-display">
+        <span class="bottom-info" id="bottominfo">
+        </span>
       </div>
     </div>
+
+    <div class="display">
+      <div class="button-line top-line">
+        <button class="button" onclick="add_number(this.innerText)" role="button">7</button>
+        <button class="button" onclick="add_number(this.innerText)" role="button">8</button>
+        <button class="button" onclick="add_number(this.innerText)" role="button">9</button>
+        <button class="button button-right">CE
+      </button>
+        <button class="button" role="button">C</button>
+      </div>
+
+      <div class="button-line">
+        <button class="button" onclick="add_number(this.innerText)" role="button">4</button>
+        <button class="button" onclick="add_number(this.innerText)" role="button">5</button>
+        <button class="button" onclick="add_number(this.innerText)" role="button">6</button>
+        <button class="button button-right" role="button">/</button>
+        <button class="button" role="button">*</button>
+      </div>
+
+      <div class="button-line">
+        <button class="button" onclick="add_number(this.innerText)" role="button">1</button>
+        <button class="button" onclick="add_number(this.innerText)" role="button">2</button>
+        <button class="button" onclick="add_number(this.innerText)" role="button">3</button>
+        <button class="button button-right" role="button">-</button>
+        <button class="button" role="button">+</button>
+      </div>
+
+      <div class="button-line">
+        <button class="button button-dup" onclick="add_number(this.innerText)" role="button">0</button>
+        <button class="button" onclick="add_number(this.innerText)" role="button">,</button>
+        <button class="button button-dup button-right" role="button">=</button>
+      </div>
+
+    </div>
   </div>
+
+  <script>
+    
+    var eventTarget = document.getElementById('BodyCalculator')
+    
+    eventTarget.addEventListener("keyup", event => {
+      console.log(event.keyCode)
+      if (event.keyCode === 48 ){
+        add_number('0')
+      }
+      if (event.keyCode === 49 ){
+        add_number('1')
+      }
+      if (event.keyCode === 50 ){
+        add_number('2')
+      }
+      if (event.keyCode === 51 ){
+        add_number('3')
+      }
+      if (event.keyCode === 52 ){
+        add_number('4')
+      }
+      if (event.keyCode === 53 ){
+        add_number('5')
+      }
+      if (event.keyCode === 54 ){
+        add_number('6')
+      }
+      if (event.keyCode === 55 ){
+        add_number('7')
+      }
+      if (event.keyCode === 56 ){
+        add_number('8')
+      }
+      if (event.keyCode === 57 ){
+        add_number('9')
+      }
+      if (event.keyCode === 188 ){
+        add_number(',')
+      }
+    });
+
+    function add_number(value){
+      var bottom = document.getElementById('bottominfo')
+
+      var text = bottom.innerText
+      var check = text.includes(',')
+
+      console.log(check)
+
+      if ((value== ',' && text.length == 0) ||( value== ',' && check == true) ) {
+      }
+      else{
+        bottom.innerText = text + value
+      }
+
+      element = document.getElementById('bottominfo')
+      element.scrollLeft += 100;
+    }
+  </script>
 </body>
 
 </html>
